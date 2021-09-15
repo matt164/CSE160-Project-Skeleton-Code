@@ -26,7 +26,9 @@ module Node{
 
 implementation{
    pack sendPackage;
-
+   uint16_t[2] = recentPing;
+   mostRecentPing[0] = 0;
+   mostRecentPing[1] = 0;
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
 
