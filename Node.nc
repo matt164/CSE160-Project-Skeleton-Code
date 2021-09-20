@@ -33,7 +33,8 @@ implementation{
    uint16_t seqNum;
    uint16_t i;
    uint16_t j;
-   uint16_t maxNodes;
+   uint16_t replies;
+   uint16_t maxNodes = 19;
    
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
@@ -52,7 +53,6 @@ implementation{
          call AMControl.start();
       }
       call neighborDisc.discInit();
-      call flooding.floodInit();
    }
 
    event void AMControl.stopDone(error_t err){}
@@ -79,7 +79,15 @@ implementation{
    }
 
    event void CommandHandler.printNeighbors(){
-      for(i = 0; i < 
+      for(i = 1; i <= maxNodes; i++){
+         printf("Node: %d\nNeighbors: ", i);
+         for(j = 1; j <= maxNodes; j++){
+            if(call neighborDisc.getReplies(i,j) > 0);
+               printf("%d ", j);
+            }
+         }
+         printf("\n\n");
+      }
    }
 
    event void CommandHandler.printRouteTable(){}
