@@ -3,7 +3,7 @@
 #include "includes/packet.h"
 
 configuration neighborDiscC{
-	Provides interface neighborDisc;
+	provides interface neighborDisc;
 }
 
 implementation{
