@@ -28,13 +28,15 @@ implementation{
 	//Prototypes
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
 
-	//initialize the nodeTable to 0s
-	for(int i = 0; i < maxNodes; i++){
-		for(int j = 0; j < maxNodes; j++){
-			nodeTable[i][j] = 0;
+	
+	
+	command void flooding.floodInit(){
+		for(int i = 0; i < maxNodes; i++){   //initialize the nodeTable to 0s
+			for(int j = 0; j < maxNodes; j++){
+				nodeTable[i][j] = 0;
+			}
 		}
 	}
-	
 	//passed in a msg to forward and the ID of the node that is to flood it.
 	command void flooding.flood(pack *msg, uint16_t curNodeID){
 		if(msg->seq > nodeTable[curNodeID - 1][msg->src - 1]){                 //if the seq of the recieved packet is higher than the stored seq it is a new flood so forward it
