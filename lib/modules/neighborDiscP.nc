@@ -49,12 +49,12 @@ implemention{
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
 	}
 
-	command void neighborDisc.recieveRequest(pack *msg, uint16_t curNodeID){
+	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
 		makePack(replyPack, curNodeID, msg->src, 1, 2, 0, pkg, 0);
 		call Sender.send(replyPack, AM_BROADCAST_ADDR);
 	}
 
-	command void neighborDisc.recieveReply(pack *msg, uint16_t curNodeID){
+	command void neighborDisc.receiveReply(pack *msg, uint16_t curNodeID){
 		if(msg->dest == curNodeID){
 			neighborTable[curNodeID][msg->src][1] = neighborTable[curNodeID][msg->src][1] + 1;
 			neighborTable[curNodeID][msg->src][2] = 0; 
