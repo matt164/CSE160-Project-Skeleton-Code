@@ -6,7 +6,7 @@
 #include "includes/channels.h"
 
 module floodingP{
-	Provides interface flooding;
+	provides interface flooding;
 
 	uses interface SimpleSend as Sender;
 }
