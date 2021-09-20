@@ -29,7 +29,7 @@ implemention{
 	//first dimension is the ID of the owner of that row in the table
 	//sencond dimmension is the ID of the node's neighbors
 	//third dimmension is 0 - requests sent, 1 - replies received, 2 - # of consecutive missed replies 
-	uint16_t[maxNodes][maxNodes][3] neighborTable;
+	uint16_t[maxNodes][maxNodes][3] neighborTable = {0};
 
 	pack requestPack;
 	pack replyPack;
@@ -55,13 +55,7 @@ implemention{
 	}
 	
 	command void neighborDisc.discInit(){
-		for(i = 0; i < maxNodes; i++){
-			for(j = 0; j < maxNodes; j++){
-				neighborTable[i][j][0] = 0;
-				neighborTable[i][j][1] = 0;           //code will check this element > 0 to tell if a node is a neighbor to a given node
-				neighborTable[i][j][2] = 0;
-		}
-		call discTimer.startPeriodic(200);         //timer to trigger the nodes updating their neighbortable
+		call discTimer.startPeriodic(400);         //timer to trigger the nodes to update their neighbor table
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
