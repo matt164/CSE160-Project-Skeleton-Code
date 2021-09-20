@@ -21,6 +21,8 @@ implementation{
 	//nodeTable[i][i] corresponds to the sequence number of a given node i
 	uint16_t maxNodes = 20;
 	uint16_t[maxNodes][maxNodes] nodeTable;
+	uint16_t i;
+	uint16_t j;
 
 	//packet to send out for flooding
 	pack floodPack;
@@ -31,8 +33,8 @@ implementation{
 	
 	
 	command void flooding.floodInit(){
-		for(int i = 0; i < maxNodes; i++){   //initialize the nodeTable to 0s
-			for(int j = 0; j < maxNodes; j++){
+		for(i = 0; i < maxNodes; i++){   //initialize the nodeTable to 0s
+			for(j = 0; j < maxNodes; j++){
 				nodeTable[i][j] = 0;
 			}
 		}
