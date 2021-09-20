@@ -61,11 +61,11 @@ implemention{
 		}
 	}
 
-	command uint16_t getRequests(uint16_t nodeID, uint16_t neighborID){
+	command uint16_t neighborDisc.getRequests(uint16_t nodeID, uint16_t neighborID){
 		return neighborTable[nodeID][neighborID][0];
 	}
 
-	command uint16_t getReplies(uint16_t nodeID, uint16_t neighborID){
+	command uint16_t neighborDisc.getReplies(uint16_t nodeID, uint16_t neighborID){
 		return neighborTable[nodeID][neighborID][1];
 	}
 
