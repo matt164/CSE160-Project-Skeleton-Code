@@ -33,4 +33,7 @@ implementation {
     
     components floodingC;
     Node.flooding -> floodingC;
+    
+    components neighborDiscC;
+    Node.neighborDisc -> neighborDiscC;
 }
