@@ -6,7 +6,7 @@
 #include "includes/channels.h"
 
 module neighborDiscP{
-	Provides interface neighborDisc;
+	provides interface neighborDisc;
 
 	uses interface SimpleSend as Sender;
 }
@@ -36,12 +36,9 @@ implemention{
 	}
 
 	command void neighborDisc.sendRequest(uint16_t curNodeID){
-
 		for(int i = 0; i < maxNodes; i++){
-
 			neighborTable[curNodeID][i][0] = neighborTable[curNodeID][i][0] + 1;
 			neighborTable[curNodeID][i][2] = neighborTable[curNodeID][i][2] + 1;
-
 			if(neighborTable[curNodeID][i][2] > 5){
 				neighborTable[curNodeID][i][1] = 0;
 				neighborTable[curNodeID][i][2] = 0;
@@ -74,11 +71,11 @@ implemention{
 
 	//function borrowed from skeleton code as I couldn't figure out how to call it from node.nc in this module
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length){
-      Package->src = src;
-      Package->dest = dest;
-      Package->TTL = TTL;
-      Package->seq = seq;
-      Package->protocol = protocol;
-      memcpy(Package->payload, payload, length);
-   }
+		Package->src = src;
+		Package->dest = dest;
+		Package->TTL = TTL;
+		Package->seq = seq;
+		Package->protocol = protocol;
+		memcpy(Package->payload, payload, length);
+	}
 }
