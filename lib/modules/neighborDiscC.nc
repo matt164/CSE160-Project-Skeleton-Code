@@ -1,6 +1,6 @@
 #include <Timer.h>
-#include "includes/CommandMsg.h"
-#include "includes/packet.h"
+#include "../../includes/CommandMsg.h"
+#include "../../includes/packet.h"
 
 configuration neighborDiscC{
 	provides interface neighborDisc;
