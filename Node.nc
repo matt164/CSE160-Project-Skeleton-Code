@@ -31,6 +31,9 @@ module Node{
 implementation{
    pack sendPackage;
    uint16_t seqNum;
+   uint16_t i;
+   uint16_t j;
+   uint16_t maxNodes;
    
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
@@ -76,6 +79,7 @@ implementation{
    }
 
    event void CommandHandler.printNeighbors(){
+      for(i = 0; i < 
    }
 
    event void CommandHandler.printRouteTable(){}
