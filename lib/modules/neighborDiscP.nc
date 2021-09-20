@@ -9,6 +9,8 @@ module neighborDiscP{
 	provides interface neighborDisc;
 
 	uses interface SimpleSend as Sender;
+	
+	uses interface Timer<TMilli> as discTimer; 
 }
 
 implemention{
