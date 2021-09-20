@@ -22,10 +22,15 @@ module Node{
    uses interface SimpleSend as Sender;
 
    uses interface CommandHandler;
+   
+   uses interface flooding;
+   
+   uses interface neighborDisc;
 }
 
 implementation{
    pack sendPackage;
+   uint16_t seqNum;
    
    // Prototypes
    void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t Protocol, uint16_t seq, uint8_t *payload, uint8_t length);
@@ -52,6 +57,7 @@ implementation{
       if(len==sizeof(pack)){
          pack* myMsg=(pack*) payload;
          dbg(GENERAL_CHANNEL, "Package Payload: %s\n", myMsg->payload);
+         call flooding.flood(myMsg, TOS_NODE_ID);
          return msg;
       }
       dbg(GENERAL_CHANNEL, "Unknown Packet Type %d\n", len);
@@ -61,8 +67,9 @@ implementation{
 
    event void CommandHandler.ping(uint16_t destination, uint8_t *payload){
       dbg(GENERAL_CHANNEL, "PING EVENT \n");
-      makePack(&sendPackage, TOS_NODE_ID, destination, 0, 0, 0, payload, PACKET_MAX_PAYLOAD_SIZE);
-      call Sender.send(sendPackage, destination);
+      seqNum = call flooding.nodeSeq(TOS_NODE_ID);
+      makePack(&sendPackage, TOS_NODE_ID, destination, 20, 0, seqNum, payload, PACKET_MAX_PAYLOAD_SIZE);
+      call Sender.send(sendPackage, AM_BROADCAST_ADDR);
    }
 
    event void CommandHandler.printNeighbors(){
