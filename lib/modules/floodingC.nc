@@ -13,6 +13,6 @@ implementation{
 	components new SimpleSendC(AM_PACK);
 	floodingP.Sender -> SimpleSendC;
 	
-	components new neighborDiscC;
+	components neighborDiscC;
 	floodingP.neighborDisc -> neighborDiscC;
 }
