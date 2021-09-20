@@ -12,4 +12,10 @@ implementation{
 
 	components new SimpleSendC(AM_PACK);
 	neighborDiscP.Sender -> SimpleSendC;
+	
+	components new TimerMilliC() as discTimer;
+	neighborDiscP.discTimer -> discTimer;
+	
+	components floodingC;
+	neighborDiscP.flooding -> floodingC;
 }
