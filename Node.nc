@@ -49,6 +49,7 @@ implementation{
          call AMControl.start();
       }
       call neighborDisc.discInit();
+      call flooding.floodInit();
    }
 
    event void AMControl.stopDone(error_t err){}
