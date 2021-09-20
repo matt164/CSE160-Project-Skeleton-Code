@@ -3,7 +3,7 @@
 #include "includes/packet.h"
 
 configuration floodingC{
-	Provides interface flooding;
+	provides interface flooding;
 }
 
 implementation{
