@@ -9,6 +9,8 @@ module floodingP{
 	provides interface flooding;
 
 	uses interface SimpleSend as Sender;
+	
+	uses interface neighborDisc;
 }
 
 implementation{
