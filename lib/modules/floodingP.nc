@@ -40,7 +40,15 @@ implementation{
 			if(msg->TTL - 1 > 0){                                   //if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
 				makePack(&floodPack, msg->src, msg->dst, msg->TTL - 1, msg->seq, msg->protocol, msg->payload, PACKET_MAX_PAYLOAD_SIZE);
 				call Sender.send(floodPack, AM_BROADCAST_ADDR);
-			}			
+			}
+			else{
+				if(msg->protocol == 1){
+					call neighborDisc.receiveRequest(msg, curNodeID);
+				}
+				if(msg->protocol == 2){
+					call neighborDisc.receiveReply(msg, curNodeID);
+				}
+			}
 		}
 	}
 
