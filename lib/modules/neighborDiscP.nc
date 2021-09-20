@@ -10,6 +10,8 @@ module neighborDiscP{
 
 	uses interface SimpleSend as Sender;
 	
+	uses interface flooding;
+	
 	uses interface Timer<TMilli> as discTimer; 
 }
 
@@ -18,6 +20,7 @@ implemention{
 	uint16_t maxNodes = 19;
 	uint16_t i;
 	uint16_t j;
+	uint16_t seqNum;
 	uint8_t* pkg;
 	//dummy pointer so I can send an empty ping for the request
 	pkg = &maxNodes;
@@ -42,8 +45,9 @@ implemention{
 				neighborTable[curNodeID - 1][i][2] = 0;
 			}
 		}
+		seqNum = call flooding.nodeSeq(curNodeID);
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
-		makePack(requestPack, curNodeID, 0, 1, 1, 0, pkg, 0);
+		makePack(requestPack, curNodeID, 0, 1, 1, seqNum, pkg, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
 	}
 	
@@ -58,7 +62,7 @@ implemention{
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
-		makePack(replyPack, curNodeID, msg->src, 1, 2, 0, pkg, 0);
+		makePack(replyPack, curNodeID, msg->src, 1, 2, msg->seq, pkg, 0);
 		call Sender.send(replyPack, AM_BROADCAST_ADDR);
 	}
 
