@@ -15,8 +15,9 @@ module neighborDiscP{
 
 implemention{
 	
-	uint16_t maxNodes = 20;
-
+	uint16_t maxNodes = 19;
+	uint16_t i;
+	uint16_t j;
 	uint8_t* pkg;
 	//dummy pointer so I can send an empty ping for the request
 	pkg = &maxNodes;
@@ -29,26 +30,31 @@ implemention{
 
 	pack requestPack;
 	pack replyPack;
-
-	for(int i = 0; i < maxNodes; i++){
-		for(int j = 0; j < maxNodes; j++){
-			neighborTable[i][j][0] = 0;
-			neighborTable[i][j][1] = 0;           //code will check this element > 0 to tell if a node is a neighbor to a given node
-			neighborTable[i][j][2] = 0;
-	}
-
-	command void neighborDisc.sendRequest(uint16_t curNodeID){
-		for(int i = 0; i < maxNodes; i++){
-			neighborTable[curNodeID][i][0] = neighborTable[curNodeID][i][0] + 1;
-			neighborTable[curNodeID][i][2] = neighborTable[curNodeID][i][2] + 1;
-			if(neighborTable[curNodeID][i][2] > 5){
-				neighborTable[curNodeID][i][1] = 0;
-				neighborTable[curNodeID][i][2] = 0;
+	
+	void sendRequest(uint16_t curNodeID);
+	
+	void sendRequest(uint16_t curNodeID){
+		for(i = 0; i < maxNodes; i++){
+			neighborTable[curNodeID - 1][i][0] = neighborTable[curNodeID - 1][i][0] + 1;
+			neighborTable[curNodeID - 1][i][2] = neighborTable[curNodeID - 1][i][2] + 1;
+			if(neighborTable[curNodeID - 1][i][2] > 5){
+				neighborTable[curNodeID - 1][i][1] = 0;
+				neighborTable[curNodeID - 1][i][2] = 0;
 			}
 		}
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
 		makePack(requestPack, curNodeID, 0, 1, 1, 0, pkg, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
+	}
+	
+	command void neighborDisc.discInit(){
+		for(i = 0; i < maxNodes; i++){
+			for(j = 0; j < maxNodes; j++){
+				neighborTable[i][j][0] = 0;
+				neighborTable[i][j][1] = 0;           //code will check this element > 0 to tell if a node is a neighbor to a given node
+				neighborTable[i][j][2] = 0;
+		}
+		call discTimer.startPeriodic(200);         //timer to trigger the nodes updating their neighbortable
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
@@ -58,17 +64,23 @@ implemention{
 
 	command void neighborDisc.receiveReply(pack *msg, uint16_t curNodeID){
 		if(msg->dest == curNodeID){
-			neighborTable[curNodeID][msg->src][1] = neighborTable[curNodeID][msg->src][1] + 1;
-			neighborTable[curNodeID][msg->src][2] = 0; 
+			neighborTable[curNodeID - 1][msg->src - 1][1] = neighborTable[curNodeID - 1][msg->src - 1][1] + 1;
+			neighborTable[curNodeID - 1][msg->src - 1][2] = 0; 
 		}
 	}
 
 	command uint16_t neighborDisc.getRequests(uint16_t nodeID, uint16_t neighborID){
-		return neighborTable[nodeID][neighborID][0];
+		return neighborTable[nodeID - 1][neighborID - 1][0];
 	}
 
 	command uint16_t neighborDisc.getReplies(uint16_t nodeID, uint16_t neighborID){
-		return neighborTable[nodeID][neighborID][1];
+		return neighborTable[nodeID - 1][neighborID - 1][1];
+	}
+	
+	event void discTimer.fired(){
+		for(i = 1; i <= maxNodes; i++){
+			sendRequest(i);
+		}
 	}
 
 	//function borrowed from skeleton code as I couldn't figure out how to call it from node.nc in this module
