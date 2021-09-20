@@ -54,12 +54,12 @@ implementation{
 
 	//function borrowed from skeleton code as I couldn't figure out how to call it from node.nc in this module
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length){
-      Package->src = src;
-      Package->dest = dest;
-      Package->TTL = TTL;
-      Package->seq = seq;
-      Package->protocol = protocol;
-      memcpy(Package->payload, payload, length);
-   }
+		Package->src = src;
+		Package->dest = dest;
+		Package->TTL = TTL;
+		Package->seq = seq;
+		Package->protocol = protocol;
+		memcpy(Package->payload, payload, length);
+	}
 }
 
