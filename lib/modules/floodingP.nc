@@ -20,7 +20,7 @@ implementation{
 	//second dimmension corresponds to the node ID of the flood src and stores the highest recieved seq
 	//nodeTable[i][i] corresponds to the sequence number of a given node i
 	uint16_t maxNodes = 20;
-	uint16_t[maxNodes][maxNodes] nodeTable;
+	uint16_t[maxNodes][maxNodes] nodeTable = {0};
 	uint16_t i;
 	uint16_t j;
 
@@ -30,15 +30,6 @@ implementation{
 	//Prototypes
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
 
-	
-	
-	command void flooding.floodInit(){
-		for(i = 0; i < maxNodes; i++){   //initialize the nodeTable to 0s
-			for(j = 0; j < maxNodes; j++){
-				nodeTable[i][j] = 0;
-			}
-		}
-	}
 	//passed in a msg to forward and the ID of the node that is to flood it.
 	command void flooding.flood(pack *msg, uint16_t curNodeID){
 		if(msg->seq > nodeTable[curNodeID - 1][msg->src - 1]){                 //if the seq of the recieved packet is higher than the stored seq it is a new flood so forward it
