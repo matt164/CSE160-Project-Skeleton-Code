@@ -33,7 +33,6 @@ implementation{
    uint16_t seqNum;
    uint16_t i;
    uint16_t j;
-   uint16_t replies;
    uint16_t maxNodes = 19;
    
    // Prototypes
