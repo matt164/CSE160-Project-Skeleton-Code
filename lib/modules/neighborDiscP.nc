@@ -34,27 +34,27 @@ implementation{
 	
 	//prototypes
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
-	void sendRequest(uint16_t curNodeID);
+	void sendRequest();
 	
-	void sendRequest(uint16_t curNodeID){
+	void sendRequest(){
 		for(i = 0; i < maxNodes; i++){
-			neighborTable[curNodeID - 1][i][0] = neighborTable[curNodeID - 1][i][0] + 1;
-			neighborTable[curNodeID - 1][i][2] = neighborTable[curNodeID - 1][i][2] + 1;
-			if(neighborTable[curNodeID - 1][i][2] > 5){
-				neighborTable[curNodeID - 1][i][1] = 0;
-				neighborTable[curNodeID - 1][i][2] = 0;
+			neighborTable[TOS_NODE_ID - 1][i][0] = neighborTable[curNodeID - 1][i][0] + 1;
+			neighborTable[TOS_NODE_ID - 1][i][2] = neighborTable[curNodeID - 1][i][2] + 1;
+			if(neighborTable[TOS_NODE_ID - 1][i][2] > 5){
+				neighborTable[TOS_NODE_ID - 1][i][1] = 0;
+				neighborTable[TOS_NODE_ID - 1][i][2] = 0;
 			}
 		}
-		seqNum = call flooding.nodeSeq(curNodeID);
+		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
-		makePack(&requestPack, curNodeID, 0, 1, 1, seqNum, (uint8_t*)dummy, 0);
+		makePack(&requestPack, TOS_NODE_ID, 0, 1, 1, seqNum, (uint8_t*)dummy, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
-		dbg(NEIGHBOR_CHANNEL, "Request sent   src: %d\n", curNodeID);
+		dbg(NEIGHBOR_CHANNEL, "Request sent   src: %d\n", TOS_NODE_ID);
 	}
 	
 	command void neighborDisc.discInit(){
 		call discTimer.startPeriodic(20000);         //timer to trigger the nodes to update their neighbor table
-		dbg(NEIGHBOR_CHANNEL, "Timer Started");
+		dbg(NEIGHBOR_CHANNEL, "Timer #%d Started", TOS_NODE_ID);
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
@@ -82,9 +82,7 @@ implementation{
 	}
 	
 	event void discTimer.fired(){
-		for(j = 1; j <= 3; j++){
-			sendRequest(j);
-		}
+		sendRequest();
 	}
 
 	//function borrowed from skeleton code as I couldn't figure out how to call it from node.nc in this module
