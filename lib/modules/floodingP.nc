@@ -30,10 +30,10 @@ implementation{
 		if(msg->seq > nodeTable[curNodeID - 1][msg->src - 1]){  //if seq of recieved higher than stored new flood so forward
 			nodeTable[curNodeID - 1][msg->src - 1] = msg->seq;					//store the seq of the new most recent flood in the node table
 			if(msg->TTL - 1 > 0){                                   //if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
-				dbg(FLOODING_CHANNEL, "Packet received\nnode: %d\nsrc: %d\n",curNodeID,msg->src);
+				dbg(FLOODING_CHANNEL, "Ping received   node: %d   src: %d\n",curNodeID,msg->src);
 				msg->TTL = msg->TTL - 1;
 				call Sender.send(*msg, AM_BROADCAST_ADDR);
-				dbg(FLOODING_CHANNEL, "Packet sent\nnode: %d", curNodeID);
+				dbg(FLOODING_CHANNEL, "Ping sent   node: %d\n", curNodeID);
 			}
 			else{
 				if(msg->protocol == 1){
