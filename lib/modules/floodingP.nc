@@ -24,9 +24,6 @@ implementation{
 	uint16_t i;
 	uint16_t j;
 
-	//packet to send out for flooding
-	pack floodPack;
-
 	//Prototypes
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
 
@@ -36,8 +33,8 @@ implementation{
 			nodeTable[curNodeID - 1][msg->src - 1] = msg->seq;					//store the seq of the new most recent flood in the node table
 			if(msg->TTL - 1 > 0){                                   //if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
 				dbg(FLOODING_CHANNEL, "Packet received\nnode: %d\nsrc: %d\n",curNodeID,msg->src);
-				makePack(&floodPack, msg->src, msg->dest, msg->TTL - 1, msg->seq, msg->protocol, msg->payload, PACKET_MAX_PAYLOAD_SIZE);
-				call Sender.send(floodPack, AM_BROADCAST_ADDR);
+				msg->TTL = msg->TTL - 1;
+				call Sender.send(msg, AM_BROADCAST_ADDR);
 				dbg(FLOODING_CHANNEL, "Packet sent\nnode: %d", curNodeID);
 			}
 			else{
@@ -57,16 +54,5 @@ implementation{
 		return nodeTable[nodeID-1][nodeID-1];
 	}
 
-
-
-	//function borrowed from skeleton code as I couldn't figure out how to call it from node.nc in this module
-	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length){
-		Package->src = src;
-		Package->dest = dest;
-		Package->TTL = TTL;
-		Package->seq = seq;
-		Package->protocol = protocol;
-		memcpy(Package->payload, payload, length);
-	}
 }
 
