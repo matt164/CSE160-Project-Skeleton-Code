@@ -19,8 +19,8 @@ implementation{
 	//first dimmension is the owner of that corresponding array of data
 	//second dimmension corresponds to the node ID of the flood src and stores the highest recieved seq
 	//nodeTable[i][i] corresponds to the sequence number of a given node i
-	uint16_t maxNodes = 20;
-	uint16_t[maxNodes][maxNodes] nodeTable = {0};
+	uint16_t maxNodes = 19;
+	uint16_t nodeTable[maxNodes][maxNodes] = {0};
 	uint16_t i;
 	uint16_t j;
 
@@ -32,7 +32,7 @@ implementation{
 
 	//passed in a msg to forward and the ID of the node that is to flood it.
 	command void flooding.flood(pack *msg, uint16_t curNodeID){
-		if(msg->seq > uint16_t* nodeTable[curNodeID - 1][msg->src - 1]){  //if seq of recieved higher than stored new flood so forward
+		if(msg->seq > nodeTable[curNodeID - 1][msg->src - 1]){  //if seq of recieved higher than stored new flood so forward
 			nodeTable[curNodeID - 1][msg->src - 1] = msg->seq;					//store the seq of the new most recent flood in the node table
 			if(msg->TTL - 1 > 0){                                   //if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
 				dbg(FLOODING_CHANNEL, "Packet received\nnode: %d\nsrc: %d\n",curNodeID,msg->src);
@@ -53,7 +53,7 @@ implementation{
 
 	//passed in a node id increments the seq number stored for that node and returns it, for use when a node makes the initial ping that triggers a flood 
 	command uint16_t flooding.nodeSeq(uint16_t nodeID){
-		uint16_t* nodeTable[nodeID-1][nodeID-1] = nodeTable[nodeID-1][nodeID-1] + 1;
+		nodeTable[nodeID-1][nodeID-1] = nodeTable[nodeID-1][nodeID-1] + 1;
 		return nodeTable[nodeID-1][nodeID-1];
 	}
 
