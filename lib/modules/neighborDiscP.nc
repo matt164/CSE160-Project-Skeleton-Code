@@ -63,16 +63,14 @@ implementation{
 		msg->src = curNodeID;
 		msg->TTL = 1;
 		msg->protocol = 2;
-		call Sender.send(*msg, AM_BROADCAST_ADDR);
+		call Sender.send(*msg, msg->dest);
 		dbg(NEIGHBOR_CHANNEL, "Reply sent   src: %d   dest: %d\n", msg->src, msg->dest);
 	}
 
 	command void neighborDisc.receiveReply(pack *msg, uint16_t curNodeID){
 		dbg(NEIGHBOR_CHANNEL, "Reply Recieved src: %d   dest: %d\n", msg->src, msg->dest);
-		if(msg->dest == curNodeID){
-			neighborTable[curNodeID - 1][msg->src - 1][1] = neighborTable[curNodeID - 1][msg->src - 1][1] + 1;
-			neighborTable[curNodeID - 1][msg->src - 1][2] = 0; 
-		}
+		neighborTable[curNodeID - 1][msg->src - 1][1] = neighborTable[curNodeID - 1][msg->src - 1][1] + 1;
+		neighborTable[curNodeID - 1][msg->src - 1][2] = 0;
 	}
 
 	command uint16_t neighborDisc.getRequests(uint16_t nodeID, uint16_t neighborID){
