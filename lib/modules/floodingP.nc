@@ -20,7 +20,7 @@ implementation{
 	//second dimmension corresponds to the node ID of the flood src and stores the highest recieved seq
 	//nodeTable[i][i] corresponds to the sequence number of a given node i
 	uint16_t maxNodes = 19;
-	uint16_t nodeTable[maxNodes][maxNodes] = {0,0};
+	uint16_t nodeTable[19][19] = {0};
 	uint16_t i;
 	uint16_t j;
 
