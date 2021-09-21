@@ -68,8 +68,8 @@ implementation{
 	}
 
 	command void neighborDisc.receiveReply(pack *msg, uint16_t curNodeID){
+		dbg(NEIGHBOR_CHANNEL, "Reply Recieved src: %d   dest: %d\n", msg->src, msg->dest);
 		if(msg->dest == curNodeID){
-			dbg(NEIGHBOR_CHANNEL, "Reply Recieved src: %d   dest: %d\n", msg->src, msg->dest);
 			neighborTable[curNodeID - 1][msg->src - 1][1] = neighborTable[curNodeID - 1][msg->src - 1][1] + 1;
 			neighborTable[curNodeID - 1][msg->src - 1][2] = 0; 
 		}
