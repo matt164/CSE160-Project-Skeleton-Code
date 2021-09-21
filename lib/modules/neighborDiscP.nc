@@ -49,7 +49,7 @@ implementation{
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
 		makePack(&requestPack, curNodeID, 0, 1, 1, seqNum, (uint8_t*)dummy, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
-		dbg(NEIGHBOR_CHANNEL, "Request sent\nsrc: %d\n", curNodeID);
+		dbg(NEIGHBOR_CHANNEL, "Request sent   src: %d\n", curNodeID);
 	}
 	
 	command void neighborDisc.discInit(){
@@ -61,7 +61,7 @@ implementation{
 		msg->src = curNodeID;
 		msg->TTL = 1;
 		call Sender.send(*msg, AM_BROADCAST_ADDR);
-		dbg(NEIGHBOR_CHANNEL, "Reply sent\nsrc: %d\n", curNodeID);
+		dbg(NEIGHBOR_CHANNEL, "Reply sent   src: %d\n", curNodeID);
 	}
 
 	command void neighborDisc.receiveReply(pack *msg, uint16_t curNodeID){
