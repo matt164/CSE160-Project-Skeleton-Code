@@ -81,7 +81,7 @@ implementation{
       for(i = 1; i <= maxNodes; i++){
          printf("Node: %d\nNeighbors: ", i);
          for(j = 1; j <= maxNodes; j++){
-            if(call neighborDisc.getReplies(i,j) > 0);
+            if(call neighborDisc.getReplies(i,j) > 0){
                printf("%d ", j);
             }
          }
