@@ -21,9 +21,6 @@ implementation{
 	uint16_t i;
 	uint16_t j;
 	uint16_t seqNum;
-	uint8_t *pkg;
-	//dummy pointer so I can send an empty ping for the request
-	pkg =(uint8_t*)&maxNodes;
 
 	//table to store the neighbors of each node and statistics about link quality on them
 	//first dimension is the ID of the owner of that row in the table
@@ -49,7 +46,7 @@ implementation{
 		}
 		seqNum = call flooding.nodeSeq(curNodeID);
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
-		makePack(&requestPack, curNodeID, 0, 1, 1, seqNum, pkg, 0);
+		makePack(&requestPack, curNodeID, 0, 1, 1, seqNum, (uint8_t*)maxNodes, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
 		dbg(NEIGHBOR_CHANNEL, "Request sent\nsrc: %d\n", curNodeID);
 	}
