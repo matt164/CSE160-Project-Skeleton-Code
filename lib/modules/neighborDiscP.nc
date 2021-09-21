@@ -29,7 +29,7 @@ implementation{
 	//first dimension is the ID of the owner of that row in the table
 	//sencond dimmension is the ID of the node's neighbors
 	//third dimmension is 0 - requests sent, 1 - replies received, 2 - # of consecutive missed replies 
-	uint16_t[maxNodes][maxNodes][3] neighborTable = {0};
+	uint16_t neighborTable[19][19][3] = {0};
 
 	pack requestPack;
 	pack replyPack;
@@ -49,7 +49,7 @@ implementation{
 		}
 		seqNum = call flooding.nodeSeq(curNodeID);
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
-		makePack(requestPack, curNodeID, 0, 1, 1, seqNum, pkg, 0);
+		makePack(&requestPack, curNodeID, 0, 1, 1, seqNum, pkg, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
 		dbg(NEIGHBOR_CHANNEL, "Request sent\nsrc: %d\n", curNodeID);
 	}
@@ -59,8 +59,10 @@ implementation{
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
-		makePack(replyPack, curNodeID, msg->src, 1, 2, msg->seq, pkg, 0);
-		call Sender.send(replyPack, AM_BROADCAST_ADDR);
+		msg->dest = msg->src;
+		msg->src = curNodeID;
+		msg->TTL = 1;
+		call Sender.send(*msg, AM_BROADCAST_ADDR);
 		dbg(NEIGHBOR_CHANNEL, "Reply sent\nsrc: %d\n", curNodeID);
 	}
 
@@ -80,8 +82,8 @@ implementation{
 	}
 	
 	event void discTimer.fired(){
-		for(i = 1; i <= maxNodes; i++){
-			sendRequest(i);
+		for(j = 1; j <= maxNodes; j++){
+			sendRequest(j);
 		}
 	}
 
