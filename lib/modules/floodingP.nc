@@ -32,11 +32,11 @@ implementation{
 
 	//passed in a msg to forward and the ID of the node that is to flood it.
 	command void flooding.flood(pack *msg, uint16_t curNodeID){
-		if(msg->seq > nodeTable[curNodeID - 1][msg->src - 1]){                 //if the seq of the recieved packet is higher than the stored seq it is a new flood so forward it
+		if(msg->seq > uint16_t* nodeTable[curNodeID - 1][msg->src - 1]){  //if seq of recieved higher than stored new flood so forward
 			nodeTable[curNodeID - 1][msg->src - 1] = msg->seq;					//store the seq of the new most recent flood in the node table
 			if(msg->TTL - 1 > 0){                                   //if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
 				dbg(FLOODING_CHANNEL, "Packet received\nnode: %d\nsrc: %d\n",curNodeID,msg->src);
-				makePack(&floodPack, msg->src, msg->dst, msg->TTL - 1, msg->seq, msg->protocol, msg->payload, PACKET_MAX_PAYLOAD_SIZE);
+				makePack(&floodPack, msg->src, msg->dest, msg->TTL - 1, msg->seq, msg->protocol, msg->payload, PACKET_MAX_PAYLOAD_SIZE);
 				call Sender.send(floodPack, AM_BROADCAST_ADDR);
 				dbg(FLOODING_CHANNEL, "Packet sent\nnode: %d", curNodeID);
 			}
@@ -53,7 +53,7 @@ implementation{
 
 	//passed in a node id increments the seq number stored for that node and returns it, for use when a node makes the initial ping that triggers a flood 
 	command uint16_t flooding.nodeSeq(uint16_t nodeID){
-		nodeTable[nodeID-1][nodeID-1] = nodeTable[nodeID-1][nodeID-1] + 1;
+		uint16_t* nodeTable[nodeID-1][nodeID-1] = nodeTable[nodeID-1][nodeID-1] + 1;
 		return nodeTable[nodeID-1][nodeID-1];
 	}
 
