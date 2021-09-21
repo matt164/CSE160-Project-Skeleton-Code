@@ -23,7 +23,7 @@ implementation{
 	uint16_t seqNum;
 	uint8_t* pkg;
 	//dummy pointer so I can send an empty ping for the request
-	pkg = &maxNodes;
+	pkg =(uint8_t*)&maxNodes;
 
 	//table to store the neighbors of each node and statistics about link quality on them
 	//first dimension is the ID of the owner of that row in the table
