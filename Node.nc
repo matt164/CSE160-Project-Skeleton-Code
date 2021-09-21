@@ -51,7 +51,7 @@ implementation{
          //Retry until successful
          call AMControl.start();
       }
-      call neighborDisc.discInit();
+      //call neighborDisc.discInit();
    }
 
    event void AMControl.stopDone(error_t err){}
