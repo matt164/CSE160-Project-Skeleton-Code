@@ -21,8 +21,6 @@ implementation{
 	//nodeTable[i][i] corresponds to the sequence number of a given node i
 	uint16_t maxNodes = 19;
 	uint16_t nodeTable[19][19] = {0};
-	uint16_t i;
-	uint16_t j;
 
 	//Prototypes
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
