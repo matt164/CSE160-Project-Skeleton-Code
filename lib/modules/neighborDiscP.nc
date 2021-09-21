@@ -54,7 +54,7 @@ implementation{
 	
 	command void neighborDisc.discInit(){
 		call discTimer.startPeriodic(20000);         //timer to trigger the nodes to update their neighbor table
-		dbg(NEIGHBOR_CHANNEL, "Timer #%d Started", TOS_NODE_ID);
+		dbg(NEIGHBOR_CHANNEL, "Timer #%d Started\n", TOS_NODE_ID);
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
@@ -83,6 +83,7 @@ implementation{
 	
 	event void discTimer.fired(){
 		sendRequest();
+		dbg(NEIGHBOR_CHANNEL, "Timer #%d Ticked\n", TOS_NODE_ID);
 	}
 
 	//function borrowed from skeleton code as I couldn't figure out how to call it from node.nc in this module
