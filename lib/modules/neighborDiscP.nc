@@ -80,7 +80,7 @@ implementation{
 	}
 	
 	event void discTimer.fired(){
-		for(j = 1; j <= maxNodes; j++){
+		for(j = 1; j <= 3; j++){
 			sendRequest(j);
 		}
 	}
