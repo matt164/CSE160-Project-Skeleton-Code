@@ -58,6 +58,7 @@ implementation{
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
+		dbg(NEIGHBOR_CHANNEL, "Before reply   src: %d   dest: \n", msg->src, msg->dest);
 		msg->dest = msg->src;
 		msg->src = curNodeID;
 		msg->TTL = 1;
