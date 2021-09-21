@@ -15,7 +15,7 @@ module neighborDiscP{
 	uses interface Timer<TMilli> as discTimer; 
 }
 
-implemention{
+implementation{
 	
 	uint16_t maxNodes = 19;
 	uint16_t i;
