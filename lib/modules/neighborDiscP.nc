@@ -60,6 +60,7 @@ implementation{
 		msg->dest = msg->src;
 		msg->src = curNodeID;
 		msg->TTL = 1;
+		msg->protocol = 2;
 		call Sender.send(*msg, AM_BROADCAST_ADDR);
 		dbg(NEIGHBOR_CHANNEL, "Reply sent   src: %d\n", curNodeID);
 	}
@@ -76,8 +77,7 @@ implementation{
 	}
 
 	command uint16_t neighborDisc.getReplies(uint16_t nodeID, uint16_t neighborID){
-		//return neighborTable[nodeID - 1][neighborID - 1][1];
-		return 1;
+		return neighborTable[nodeID - 1][neighborID - 1][1];
 	}
 	
 	event void discTimer.fired(){
