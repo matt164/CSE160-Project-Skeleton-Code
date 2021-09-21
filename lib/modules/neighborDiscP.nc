@@ -38,8 +38,8 @@ implementation{
 	
 	void sendRequest(){
 		for(i = 0; i < maxNodes; i++){
-			neighborTable[TOS_NODE_ID - 1][i][0] = neighborTable[curNodeID - 1][i][0] + 1;
-			neighborTable[TOS_NODE_ID - 1][i][2] = neighborTable[curNodeID - 1][i][2] + 1;
+			neighborTable[TOS_NODE_ID - 1][i][0] = neighborTable[TOS_NODE_ID - 1][i][0] + 1;
+			neighborTable[TOS_NODE_ID - 1][i][2] = neighborTable[TOS_NODE_ID - 1][i][2] + 1;
 			if(neighborTable[TOS_NODE_ID - 1][i][2] > 5){
 				neighborTable[TOS_NODE_ID - 1][i][1] = 0;
 				neighborTable[TOS_NODE_ID - 1][i][2] = 0;
