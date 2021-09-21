@@ -63,7 +63,7 @@ implementation{
 		msg->TTL = 1;
 		msg->protocol = 2;
 		call Sender.send(*msg, AM_BROADCAST_ADDR);
-		dbg(NEIGHBOR_CHANNEL, "Reply sent   src: %d\n", curNodeID);
+		dbg(NEIGHBOR_CHANNEL, "Reply sent   src: %d   dest: \n", msg->src, msg->dest);
 	}
 
 	command void neighborDisc.receiveReply(pack *msg, uint16_t curNodeID){
