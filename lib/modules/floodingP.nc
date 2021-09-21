@@ -32,7 +32,7 @@ implementation{
 			if(msg->TTL - 1 > 0){                                   //if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
 				dbg(FLOODING_CHANNEL, "Packet received\nnode: %d\nsrc: %d\n",curNodeID,msg->src);
 				msg->TTL = msg->TTL - 1;
-				call Sender.send(msg, AM_BROADCAST_ADDR);
+				call Sender.send(*msg, AM_BROADCAST_ADDR);
 				dbg(FLOODING_CHANNEL, "Packet sent\nnode: %d", curNodeID);
 			}
 			else{
