@@ -76,7 +76,8 @@ implementation{
 	}
 
 	command uint16_t neighborDisc.getReplies(uint16_t nodeID, uint16_t neighborID){
-		return neighborTable[nodeID - 1][neighborID - 1][1];
+		//return neighborTable[nodeID - 1][neighborID - 1][1];
+		return 1;
 	}
 	
 	event void discTimer.fired(){
