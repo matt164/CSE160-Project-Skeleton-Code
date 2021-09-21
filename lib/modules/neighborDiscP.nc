@@ -53,7 +53,7 @@ implementation{
 	}
 	
 	command void neighborDisc.discInit(){
-		call discTimer.startPeriodic(2000);         //timer to trigger the nodes to update their neighbor table
+		call discTimer.startPeriodic(20000);         //timer to trigger the nodes to update their neighbor table
 	}
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
