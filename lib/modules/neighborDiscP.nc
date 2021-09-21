@@ -59,11 +59,9 @@ implementation{
 
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
 		dbg(NEIGHBOR_CHANNEL, "Before reply   src: %d   dest: %d\n", msg->src, msg->dest);
-		msg->dest = msg->src;
-		msg->src = curNodeID;
-		msg->TTL = 1;
-		msg->protocol = 2;
-		call Sender.send(*msg, msg->dest);
+		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
+		makePack(&replyPack, curNodeID, msg->src, 1, 2, seqNum, msg->payload, 0);
+		call Sender.send(replyPack, msg->src);
 		dbg(NEIGHBOR_CHANNEL, "Reply sent   src: %d   dest: %d\n", msg->src, msg->dest);
 	}
 
