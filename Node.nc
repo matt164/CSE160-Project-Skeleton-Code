@@ -74,7 +74,7 @@ implementation{
       seqNum = call flooding.nodeSeq(TOS_NODE_ID);
       makePack(&sendPackage, TOS_NODE_ID, destination, 20, 0, seqNum, payload, PACKET_MAX_PAYLOAD_SIZE);
       call Sender.send(sendPackage, AM_BROADCAST_ADDR);
-      dbg(FLOODING_CHANNEL, "Packet Sent\nsrc: %d\n", TOS_NODE_ID);
+      dbg(FLOODING_CHANNEL, "Packet Sent   src: %d\n", TOS_NODE_ID);
    }
 
    event void CommandHandler.printNeighbors(){
