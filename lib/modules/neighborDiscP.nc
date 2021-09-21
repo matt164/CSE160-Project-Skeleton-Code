@@ -21,7 +21,7 @@ implementation{
 	uint16_t i;
 	uint16_t j;
 	uint16_t seqNum;
-	uint8_t* pkg;
+	uint8_t *pkg;
 	//dummy pointer so I can send an empty ping for the request
 	pkg =(uint8_t*)&maxNodes;
 
