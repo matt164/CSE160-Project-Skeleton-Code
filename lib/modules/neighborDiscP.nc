@@ -46,7 +46,7 @@ implementation{
 			}
 		}
 		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
-		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
+		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 6 = request 7 = reply
 		makePack(&requestPack, TOS_NODE_ID, 0, 1, 6, seqNum, (uint8_t*)dummy, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
 		dbg(NEIGHBOR_CHANNEL, "Request sent   src: %d\n", TOS_NODE_ID);
