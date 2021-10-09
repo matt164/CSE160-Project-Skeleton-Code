@@ -36,10 +36,10 @@ implementation{
 				dbg(FLOODING_CHANNEL, "Ping sent   node: %d\n", curNodeID);
 			}
 			else{
-				if(msg->protocol == 1){
+				if(msg->protocol == 6){
 					call neighborDisc.receiveRequest(msg, curNodeID);
 				}
-				if(msg->protocol == 2){
+				if(msg->protocol == 7){
 					call neighborDisc.receiveReply(msg, curNodeID);
 				}
 			}
