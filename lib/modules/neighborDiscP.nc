@@ -47,7 +47,7 @@ implementation{
 		}
 		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 1 = request 2 = reply
-		makePack(&requestPack, TOS_NODE_ID, 0, 1, 1, seqNum, (uint8_t*)dummy, 0);
+		makePack(&requestPack, TOS_NODE_ID, 0, 1, 6, seqNum, (uint8_t*)dummy, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
 		dbg(NEIGHBOR_CHANNEL, "Request sent   src: %d\n", TOS_NODE_ID);
 	}
@@ -60,7 +60,7 @@ implementation{
 	command void neighborDisc.receiveRequest(pack *msg, uint16_t curNodeID){
 		dbg(NEIGHBOR_CHANNEL, "Before reply   src: %d   dest: %d\n", msg->src, msg->dest);
 		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
-		makePack(&replyPack, curNodeID, msg->src, 1, 2, seqNum, msg->payload, 0);
+		makePack(&replyPack, curNodeID, msg->src, 1, 7, seqNum, msg->payload, 0);
 		call Sender.send(replyPack, msg->src);
 		dbg(NEIGHBOR_CHANNEL, "Reply sent   src: %d   dest: %d\n", msg->src, msg->dest);
 	}
