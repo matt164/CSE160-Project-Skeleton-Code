@@ -16,7 +16,6 @@ module LSRoutingP{
 implementation{
 	
 	uint16_t maxNodes = 19;
-	uint8_t buffer[19];
 	uint16_t i, j, k, min, minIndex, v;
 	bool considered[19] = {0};	
 
@@ -42,7 +41,7 @@ implementation{
 		for(i = 0; i < maxNodes - 1; i++){
 
 			v = minNode(curNodeID);
-			considered[v] = true;
+			considered[v] = 1;
 
 			for(j = 0; j < maxNodes; j++){
 
@@ -64,9 +63,8 @@ implementation{
 
 	command void LSRouting.updateNeighbors(pack *msg, uint16_t curNodeID){
 		if(msg->seq > routingTable[curNodeID - 1][msg->src - 1][2]){
-			uint8_t *buffer = msg->payload;
 			for(i = 0; i < maxNodes; i++){
-				DVTable[curNodeID - 1][msg->src - 1][i] = buffer + i;
+				DVTable[curNodeID - 1][msg->src - 1][i] = msg->payload + i;
 			}
 		}
 	}
@@ -79,7 +77,7 @@ implementation{
 		return routingTable[curNodeID][destNodeID][0];
 	}
 
-	event LSTimer.fired(){
+	event void LSTimer.fired(){
 		calculatePaths(TOS_NODE_ID);
 	}
 
@@ -88,7 +86,7 @@ implementation{
 		for(k = 0; k < maxNodes; k++){
 			if(!considered[k] && routingTable[curNodeID - 1][k][1] <= min){
 				min = routingTable[curNodeID - 1][k][1];
-				minIndex = k
+				minIndex = k;
 			}
 		}
 		return minIndex;
