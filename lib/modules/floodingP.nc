@@ -56,7 +56,7 @@ implementation{
 					call neighborDisc.receiveReply(msg, curNodeID);
 				}
 				//the message was a normal ping and should be sent along the global shortest path via the routing table
-				else{
+				else if(msg->dest != curNodeID){
 					nextHop = call LSRouting.getNextHop(curNodeID, msg->dest);
 					call Sender.send(*msg, nextHop);
 				}
