@@ -68,6 +68,7 @@ implementation{
 				DVTable[curNodeID - 1][msg->src - 1][i] = *(msg->payload + i);
 				printf("%d ", DVTable[curNodeID - 1][msg->src - 1][i]);
 			}
+			printf("\n");
 		}
 	}
 
