@@ -11,6 +11,8 @@ module floodingP{
 	uses interface SimpleSend as Sender;
 	
 	uses interface neighborDisc;
+	
+	uses interface LSRouting;
 }
 
 implementation{
