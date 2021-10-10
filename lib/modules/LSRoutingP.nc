@@ -16,7 +16,7 @@ module LSRoutingP{
 implementation{
 	
 	uint16_t maxNodes = 19;
-	uint16_t i, j, k, min, minIndex, v;
+	uint16_t i, j, k, min, minIndex, v, nextHop, dist;
 	bool considered[19] = {0};	
 
 	//first dimmension is the node who owns that particular routing table
@@ -76,8 +76,15 @@ implementation{
 		return routingTable[curNodeID][destNodeID][0];
 	}
 	
-	command uint16_t LSRouting.getPathCost(uint16_t curNodeID, uint16_t destNodeID){
-		return routingTable[curNodeID][destNodeID][0];
+	command void LSRouting.printRouteTable(){
+		printf("Node: %d\n",TOS_NODE_ID);
+		for(i = 0; i < maxNodes){
+			if( i != TOS_NODE_ID && routingTable[TOS_NODE_ID][i][1] < maxNodes + 1){
+				nextHop = routingTable[TOS_NODE_ID][i][0];
+				dist = routingTable[TOS_NODE_ID][i][1];
+				printf("Dest: %d  Next Hop: %d  Distance: %d\n",i,nextHop,dist);
+			}
+		}
 	}
 
 	event void LSTimer.fired(){
