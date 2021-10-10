@@ -55,7 +55,7 @@ implementation{
 				}
 			}
 		}
-		call printRouteTable();
+		call LSRouting.printRouteTable();
 	}
 
 	command void LSRouting.LSInit(){
