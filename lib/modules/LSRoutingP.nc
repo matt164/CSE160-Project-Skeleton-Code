@@ -93,7 +93,7 @@ implementation{
 		printf("DV Table of Node: %d\n",TOS_NODE_ID);
 		for(i = 0; i < maxNodes; i++){
 			for(j = 0; j < maxNodes; j++)
-				printf("%d ",DVTable[TOS_NODE_ID][i][j]);
+				printf("%d ",DVTable[TOS_NODE_ID - 1][i][j]);
 			printf("\n");
 		}
 	}
