@@ -36,4 +36,7 @@ implementation {
     
     components neighborDiscC;
     Node.neighborDisc -> neighborDiscC;
+    
+    components LSRoutingC;
+    Node.LSRouting -> LSRoutingC;
 }
