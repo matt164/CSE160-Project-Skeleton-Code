@@ -58,7 +58,7 @@ implementation{
 	}
 
 	command void LSRouting.LSInit(){
-		call LSTimer.startPeriodic(20000);
+		call LSTimer.startPeriodic(60000);
 	}
 
 	command void LSRouting.updateNeighbors(pack *msg, uint16_t curNodeID){
