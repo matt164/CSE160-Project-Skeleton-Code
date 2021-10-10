@@ -33,6 +33,7 @@ implementation{
 	void calculatePaths(uint16_t curNodeID);
 
 	void calculatePaths(uint16_t curNodeID){
+		call LSRouting.printDVTable();
 		for(i = 0; i < maxNodes; i++){
 			routingTable[curNodeID - 1][i][1] = maxNodes + 1;
 		}
@@ -49,7 +50,7 @@ implementation{
 
 					routingTable[curNodeID - 1][j][1] = routingTable[curNodeID - 1][v][1] + DVTable[curNodeID - 1][v][j];
 					if(v == curNodeID - 1)
-						routingTable[curNodeID - 1][j][0] = j;
+						routingTable[curNodeID - 1][j][0] = j + 1;
 					else
 						routingTable[curNodeID - 1][j][0] = routingTable[curNodeID - 1][v][0]; 
 				}
@@ -78,13 +79,22 @@ implementation{
 	}
 	
 	command void LSRouting.printRouteTable(){
-		printf("Node: %d\n",TOS_NODE_ID);
+		printf("Routing Table of Node: %d\n",TOS_NODE_ID);
 		for(i = 0; i < maxNodes; i++){
 			if( i + 1 != TOS_NODE_ID && routingTable[TOS_NODE_ID - 1][i][1] < maxNodes + 1){
 				nextHop = routingTable[TOS_NODE_ID - 1][i][0];
 				dist = routingTable[TOS_NODE_ID - 1][i][1];
 				printf("Dest: %d  Next Hop: %d  Distance: %d\n",i + 1,nextHop,dist);
 			}
+		}
+	}
+	
+	command void LSRouting.printDVTable(){
+		printf("DV Table of Node: %d\n",TOS_NODE_ID);
+		for(i = 0; i < maxNodes; i++){
+			for(j = 0; j < maxNodes; j++)
+				printf("%d ",DVTable[TOS_NODE_ID][i][j]);
+			printf("\n");
 		}
 	}
 
