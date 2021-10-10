@@ -80,9 +80,9 @@ implementation{
 	command void LSRouting.printRouteTable(){
 		printf("Node: %d\n",TOS_NODE_ID);
 		for(i = 0; i < maxNodes; i++){
-			if( i != TOS_NODE_ID && routingTable[TOS_NODE_ID][i][1] < maxNodes + 1){
-				nextHop = routingTable[TOS_NODE_ID][i][0];
-				dist = routingTable[TOS_NODE_ID][i][1];
+			if( i + 1 != TOS_NODE_ID && routingTable[TOS_NODE_ID - 1][i][1] < maxNodes + 1){
+				nextHop = routingTable[TOS_NODE_ID - 1][i][0];
+				dist = routingTable[TOS_NODE_ID - 1][i][1];
 				printf("Dest: %d  Next Hop: %d  Distance: %d\n",i + 1,nextHop,dist);
 			}
 		}
