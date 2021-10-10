@@ -12,8 +12,8 @@ module neighborDiscP{
 	
 	uses interface flooding;
 	
-	uses interface Timer<TMilli> as discTimer;
-	
+	uses interface Timer<TMilli> as discTimer; 
+
 	uses interface LSRouting;
 }
 
@@ -22,8 +22,11 @@ implementation{
 	uint16_t maxNodes = 19;
 	uint16_t i;
 	uint16_t j;
+	uint16_t n;
 	uint16_t seqNum;
 	uint8_t dummy = 4;
+	uint8_t LSVector[19];
+	uint16_t numNeighbors[19] = {0};
 
 	//table to store the neighbors of each node and statistics about link quality on them
 	//first dimension is the ID of the owner of that row in the table
@@ -33,12 +36,15 @@ implementation{
 
 	pack requestPack;
 	pack replyPack;
+	pack LSPack;
 	
 	//prototypes
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
 	void sendRequest();
+	void LSFlood();
 	
 	void sendRequest(){
+		n = 0;
 		for(i = 0; i < maxNodes; i++){
 			neighborTable[TOS_NODE_ID - 1][i][0] = neighborTable[TOS_NODE_ID - 1][i][0] + 1;
 			neighborTable[TOS_NODE_ID - 1][i][2] = neighborTable[TOS_NODE_ID - 1][i][2] + 1;
@@ -46,16 +52,37 @@ implementation{
 				neighborTable[TOS_NODE_ID - 1][i][1] = 0;
 				neighborTable[TOS_NODE_ID - 1][i][2] = 0;
 			}
+			if(neighborTable[TOS_NODE_ID - 1][i][1] > 0)
+				n++;
 		}
+
+		if(n != numNeighbors[TOS_NODE_ID - 1]){
+			LSFlood();
+			numNeighbors[TOS_NODE_ID - 1] = n;
+		}
+
 		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 6 = request 7 = reply
 		makePack(&requestPack, TOS_NODE_ID, maxNodes + 1, 1, 6, seqNum, (uint8_t*)dummy, 0);
 		call Sender.send(requestPack, AM_BROADCAST_ADDR);
 		dbg(NEIGHBOR_CHANNEL, "Request sent   src: %d\n", TOS_NODE_ID);
 	}
+
+	void LSFlood(){
+		for(j = 0; j < maxNodes; j++){
+			if(neighborTable[TOS_NODE_ID][j][1] > 0)
+				LSVector[j] = 1;
+			else
+				LSVector[j] = maxNodes + 1;
+		}
+		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
+		makePack(&LSPack, TOS_NODE_ID, maxNodes + 1, maxNodes, PROTOCOL_LINKSTATE, seqNum, (uint8_t*)LSVector, maxNodes);
+		call LSRouting.updateNeighbors(LSPack, TOS_NODE_ID);
+		call Sender.send(LSPack, AM_BROADCAST_ADDR);
+	}
 	
 	command void neighborDisc.discInit(){
-		call discTimer.startPeriodic(60000);         //timer to trigger the nodes to update their neighbor table
+		call discTimer.startPeriodic(10000);         //timer to trigger the nodes to update their neighbor table
 		dbg(NEIGHBOR_CHANNEL, "Timer #%d Started\n", TOS_NODE_ID);
 	}
 
