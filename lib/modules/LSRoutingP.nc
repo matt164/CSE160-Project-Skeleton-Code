@@ -65,7 +65,7 @@ implementation{
 		if(msg->seq > routingTable[curNodeID - 1][msg->src - 1][2]){
 			//printf("Node: %d adding DV from %d\n", curNodeID, msg->src);
 			for(i = 0; i < maxNodes; i++){
-				DVTable[curNodeID - 1][msg->src - 1][i] = msg->payload + i;
+				DVTable[curNodeID - 1][msg->src - 1][i] = *(msg->payload + i);
 				//printf("%d ", DVTable[curNodeID - 1][msg->src - 1][i]);
 			}
 		}
