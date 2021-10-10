@@ -74,6 +74,10 @@ implementation{
 	command uint16_t LSRouting.getNextHop(uint16_t curNodeID, uint16_t destNodeID){
 		return routingTable[curNodeID][destNodeID][0];
 	}
+	
+	command uint16_t LSRouting.getPathCost(uint16_t curNodeID, uint16_t destNodeID){
+		return routingTable[curNodeID][destNodeID][0];
+	}
 
 	event LSTimer.fired(){
 		calculatePaths(TOS_NODE_ID);
