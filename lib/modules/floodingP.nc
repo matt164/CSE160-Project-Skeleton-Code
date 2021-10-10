@@ -21,6 +21,7 @@ implementation{
 	//nodeTable[i][i] corresponds to the sequence number of a given node i
 	uint16_t maxNodes = 19;
 	uint16_t nodeTable[19][19] = {0};
+	uint16_t nextHop;
 
 	//Prototypes
 	void makePack(pack *Package, uint16_t src, uint16_t dest, uint16_t TTL, uint16_t protocol, uint16_t seq, uint8_t* payload, uint8_t length);
@@ -29,18 +30,35 @@ implementation{
 	command void flooding.flood(pack *msg, uint16_t curNodeID){
 		if(msg->seq > nodeTable[curNodeID - 1][msg->src - 1]){  //if seq of recieved higher than stored new flood so forward
 			nodeTable[curNodeID - 1][msg->src - 1] = msg->seq;					//store the seq of the new most recent flood in the node table
-			if(msg->TTL - 1 > 0){                                   //if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
-				dbg(FLOODING_CHANNEL, "Ping received   node: %d   src: %d\n",curNodeID,msg->src);
-				msg->TTL = msg->TTL - 1;
-				call Sender.send(*msg, AM_BROADCAST_ADDR);
-				dbg(FLOODING_CHANNEL, "Ping sent   node: %d\n", curNodeID);
+			//Setting the destination to a non-existing node means that the message is meant to flood the whole network
+			if(msg->dest > maxNodes){
+				//if the message to be flooded is a Link State packet update this node's distance vector table
+				if(msg->protocol == 2){
+					call LSRouting.updateNeighbors(msg, curNodeID);
+				}
+				//if the TTL of the flood is not yet 0 forward an updated packet to all neighbors
+				if(msg->TTL - 1 > 0){                                   
+					dbg(FLOODING_CHANNEL, "Ping received   node: %d   src: %d\n",curNodeID,msg->src);
+					msg->TTL = msg->TTL - 1;
+					call Sender.send(*msg, AM_BROADCAST_ADDR);
+					dbg(FLOODING_CHANNEL, "Ping sent   node: %d\n", curNodeID);
+				}
+				else{
+					//the message was a neighbor discovery request
+					if(msg->protocol == 6){
+						call neighborDisc.receiveRequest(msg, curNodeID);
+					}
+				}
 			}
 			else{
-				if(msg->protocol == 6){
-					call neighborDisc.receiveRequest(msg, curNodeID);
-				}
-				if(msg->protocol == 7){
+				//the message you received was a reply to a neighbor discovery request
+				if(msg->protocol == 7){  
 					call neighborDisc.receiveReply(msg, curNodeID);
+				}
+				//the message was a normal ping and should be sent along the global shortest path via the routing table
+				else{
+					nextHop = call LSRouting.getNextHop(curNodeID, msg->dest);
+					call Sender.send(*msg, nextHop);
 				}
 			}
 		}
@@ -53,4 +71,3 @@ implementation{
 	}
 
 }
-
