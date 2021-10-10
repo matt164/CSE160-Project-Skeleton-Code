@@ -65,12 +65,12 @@ implementation{
 
 	command void LSRouting.updateNeighbors(pack *msg, uint16_t curNodeID){
 		if(msg->seq > routingTable[curNodeID - 1][msg->src - 1][2]){
-			//printf("Node: %d adding DV from %d\n", curNodeID, msg->src);
+			printf("Node: %d adding DV from %d\n", curNodeID, msg->src);
 			for(i = 0; i < maxNodes; i++){
 				DVTable[curNodeID - 1][msg->src - 1][i] = *(msg->payload + i);
 				//printf("%d ", DVTable[curNodeID - 1][msg->src - 1][i]);
 			}
-			//printf("\n");
+			printf("\n");
 		}
 	}
 
@@ -89,14 +89,14 @@ implementation{
 		}
 	}
 	
-	/*command void LSRouting.printDVTable(){
+	command void LSRouting.printDVTable(){
 		printf("DV Table of Node: %d\n",TOS_NODE_ID);
 		for(i = 0; i < maxNodes; i++){
 			for(j = 0; j < maxNodes; j++)
 				printf("%d ",DVTable[TOS_NODE_ID - 1][i][j]);
 			printf("\n");
 		}
-	}*/
+	}
 
 	event void LSTimer.fired(){
 		calculatePaths(TOS_NODE_ID);
