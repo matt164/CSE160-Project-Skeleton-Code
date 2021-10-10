@@ -30,7 +30,7 @@ implementation{
 	//third dimmension is the distances to each node from that node
 	uint16_t DVTable[19][19][19] = {0};
 
-	uint16_t minNode();
+	uint16_t minNode(uint16_t curNodeID);
 	void calculatePaths(uint16_t curNodeID);
 
 	void calculatePaths(uint16_t curNodeID){
