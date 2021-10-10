@@ -25,9 +25,9 @@ implementation{
 	uint16_t n;
 	uint16_t seqNum;
 	uint8_t dummy = 4;
+	//vector to store the distance vector for a node that will be flooded to the network
 	uint8_t LSVector[19];
-	uint16_t numNeighbors[19] = {0};
-
+	
 	//table to store the neighbors of each node and statistics about link quality on them
 	//first dimension is the ID of the owner of that row in the table
 	//sencond dimmension is the ID of the node's neighbors
@@ -52,15 +52,9 @@ implementation{
 				neighborTable[TOS_NODE_ID - 1][i][1] = 0;
 				neighborTable[TOS_NODE_ID - 1][i][2] = 0;
 			}
-			if(neighborTable[TOS_NODE_ID - 1][i][1] > 0)
-				n++;
 		}
-
-		if(n != numNeighbors[TOS_NODE_ID - 1]){
-			LSFlood();
-			numNeighbors[TOS_NODE_ID - 1] = n;
-		}
-
+		//periodically sends out an updated distance vector that will handle dropped or added connections
+		LSFlood();
 		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
 		//leveraging protocol to signify this as a request as I can't tell how to setup a Link Layer module to act as a header 6 = request 7 = reply
 		makePack(&requestPack, TOS_NODE_ID, maxNodes + 1, 1, 6, seqNum, (uint8_t*)dummy, 0);
@@ -69,15 +63,21 @@ implementation{
 	}
 
 	void LSFlood(){
+		//check the neighbor table for the current nodes and add each connected neighbor to the distance vector
 		for(j = 0; j < maxNodes; j++){
-			if(neighborTable[TOS_NODE_ID][j][1] > 0)
+			//if the neighbor is connected set the distance to 1 as I am implementing hop count routing
+			if(neighborTable[TOS_NODE_ID - 1][j][1] > 0)
 				LSVector[j] = 1;
+			//if the neighbor is not connected set the distance to 1 more than the max distance which is treated as infinity
 			else
 				LSVector[j] = maxNodes + 1;
 		}
+		//create the LS packet to flood to the network
 		seqNum = call flooding.nodeSeq(TOS_NODE_ID);
 		makePack(&LSPack, TOS_NODE_ID, maxNodes + 1, maxNodes, PROTOCOL_LINKSTATE, seqNum, (uint8_t*)LSVector, maxNodes);
+		//update the current node's neighbor table with the new DV
 		call LSRouting.updateNeighbors(LSPack, TOS_NODE_ID);
+		//send the message out to be flooded over the network
 		call Sender.send(LSPack, AM_BROADCAST_ADDR);
 	}
 	
