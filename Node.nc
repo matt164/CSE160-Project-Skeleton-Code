@@ -94,14 +94,7 @@ implementation{
    }
 
    event void CommandHandler.printRouteTable(){
-      i = 0;
-      printf("Node: %d\n", i);
-      for(j = 0; j < maxNodes; j++){
-            nextHop = call LSRouting.getNextHop(i,j);
-            dist = call LSRouting.getPathCost(i,j);
-            if(i != j)
-               printf("dest: %d  next hop: %d  cost: %d\n",j,nextHop,dist);
-      }
+      call LSRouting.printRouteTable();
    }
 
    event void CommandHandler.printLinkState(){}
