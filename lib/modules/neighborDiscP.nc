@@ -12,7 +12,9 @@ module neighborDiscP{
 	
 	uses interface flooding;
 	
-	uses interface Timer<TMilli> as discTimer; 
+	uses interface Timer<TMilli> as discTimer;
+	
+	uses interface LSRouting;
 }
 
 implementation{
