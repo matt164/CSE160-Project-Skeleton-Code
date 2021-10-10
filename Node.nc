@@ -76,8 +76,8 @@ implementation{
    event void CommandHandler.ping(uint16_t destination, uint8_t *payload){
       dbg(GENERAL_CHANNEL, "PING EVENT \n");
       seqNum = call flooding.nodeSeq(TOS_NODE_ID);
-      nextHop = call LSRouting.getNextHop(curNodeID, msg->dest);
-		printf("Sending packet from %d to %d via %d\n",TOS_NODE_ID, destination, nextHop);
+      nextHop = call LSRouting.getNextHop(TOS_NODE_ID, destination);
+      printf("Sending packet from %d to %d via %d\n",TOS_NODE_ID, destination, nextHop);
       makePack(&sendPackage, TOS_NODE_ID, destination, maxNodes + 1, 0, seqNum, payload, PACKET_MAX_PAYLOAD_SIZE);
       call Sender.send(sendPackage, nextHop);
       dbg(FLOODING_CHANNEL, "Packet Sent   src: %d   seq: %d\n", TOS_NODE_ID, seqNum);
