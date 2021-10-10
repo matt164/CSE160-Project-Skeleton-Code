@@ -82,7 +82,7 @@ implementation{
 	}
 	
 	command void neighborDisc.discInit(){
-		call discTimer.startPeriodic(10000);         //timer to trigger the nodes to update their neighbor table
+		call discTimer.startPeriodic(60000);         //timer to trigger the nodes to update their neighbor table
 		dbg(NEIGHBOR_CHANNEL, "Timer #%d Started\n", TOS_NODE_ID);
 	}
 
