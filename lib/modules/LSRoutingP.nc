@@ -36,6 +36,7 @@ implementation{
 		call LSRouting.printDVTable();
 		for(i = 0; i < maxNodes; i++){
 			routingTable[curNodeID - 1][i][1] = maxNodes + 1;
+			considered[i] = 0;
 		}
 		routingTable[curNodeID - 1][curNodeID - 1][1] = 0;
 
