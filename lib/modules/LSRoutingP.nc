@@ -83,7 +83,7 @@ implementation{
 			if( i != TOS_NODE_ID && routingTable[TOS_NODE_ID][i][1] < maxNodes + 1){
 				nextHop = routingTable[TOS_NODE_ID][i][0];
 				dist = routingTable[TOS_NODE_ID][i][1];
-				printf("Dest: %d  Next Hop: %d  Distance: %d\n",i,nextHop,dist);
+				printf("Dest: %d  Next Hop: %d  Distance: %d\n",i + 1,nextHop,dist);
 			}
 		}
 	}
