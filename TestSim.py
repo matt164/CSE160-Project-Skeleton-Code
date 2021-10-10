@@ -135,10 +135,10 @@ def main():
     s.loadTopo("house.topo");
     s.loadNoise("no_noise.txt");
     s.bootAll();
-    s.addChannel(s.COMMAND_CHANNEL);
+    #s.addChannel(s.COMMAND_CHANNEL);
     s.addChannel(s.GENERAL_CHANNEL);
-    s.addChannel(s.NEIGHBOR_CHANNEL);
-    s.addChannel(s.FLOODING_CHANNEL);
+    #s.addChannel(s.NEIGHBOR_CHANNEL);
+    #s.addChannel(s.FLOODING_CHANNEL);
 
     s.runTime(20);
     s.ping(1, 2, "Hello, World");
