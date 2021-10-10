@@ -35,6 +35,7 @@ implementation{
    uint16_t seqNum;
    uint16_t i;
    uint16_t j;
+   uint16_t dist, nextHop;
    uint16_t maxNodes = 19;
    
    // Prototypes
@@ -92,7 +93,16 @@ implementation{
       }
    }
 
-   event void CommandHandler.printRouteTable(){}
+   event void CommandHandler.printRouteTable(){
+      i = 0;
+      printf("Node: %d\n", i);
+      for(j = 0; j < maxNodes; j++){
+            nextHop = LSRouting.getNextHop(i,j);
+            dist = LSRouting.getPathCost(i,j);
+            if(i != j)
+               printf("dest: %d  next hop: %d  cost: %d\n",j,nextHop,dist);
+      }
+   }
 
    event void CommandHandler.printLinkState(){}
 
