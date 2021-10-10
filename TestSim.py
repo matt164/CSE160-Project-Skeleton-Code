@@ -140,13 +140,13 @@ def main():
     #s.addChannel(s.NEIGHBOR_CHANNEL);
     #s.addChannel(s.FLOODING_CHANNEL);
 
+    s.runTime(60);
+    s.runTime(10);
+    #s.ping(1, 3, "Hi!");
+    s.runTime(60);
     s.runTime(20);
     s.ping(1, 2, "Hello, World");
-    s.runTime(10);
-    s.ping(1, 3, "Hi!");
-    s.runTime(20);
-    s.runTime(20);
-    s.routeDMP(0);
+    #s.routeDMP(0);
     s.runTime(20);
 
 if __name__ == '__main__':
