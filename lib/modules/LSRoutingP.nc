@@ -33,7 +33,7 @@ implementation{
 	void calculatePaths(uint16_t curNodeID);
 
 	void calculatePaths(uint16_t curNodeID){
-		//call LSRouting.printDVTable();
+		call LSRouting.printDVTable();
 		for(i = 0; i < maxNodes; i++){
 			routingTable[curNodeID - 1][i][1] = maxNodes + 1;
 		}
@@ -65,12 +65,12 @@ implementation{
 
 	command void LSRouting.updateNeighbors(pack *msg, uint16_t curNodeID){
 		if(msg->seq > routingTable[curNodeID - 1][msg->src - 1][2]){
-			printf("Node: %d adding DV from %d\n", curNodeID, msg->src);
+			//printf("Node: %d adding DV from %d\n", curNodeID, msg->src);
 			for(i = 0; i < maxNodes; i++){
 				DVTable[curNodeID - 1][msg->src - 1][i] = *(msg->payload + i);
 				//printf("%d ", DVTable[curNodeID - 1][msg->src - 1][i]);
 			}
-			printf("\n");
+			//printf("\n");
 		}
 	}
 
