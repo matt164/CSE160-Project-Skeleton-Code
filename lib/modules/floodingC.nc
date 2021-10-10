@@ -15,4 +15,7 @@ implementation{
 	
 	components neighborDiscC;
 	floodingP.neighborDisc -> neighborDiscC;
+	
+	components LSRoutingC;
+	floodingP.LSRouting -> LSRoutingC;
 }
