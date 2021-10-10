@@ -33,7 +33,7 @@ implementation{
 	void calculatePaths(uint16_t curNodeID);
 
 	void calculatePaths(uint16_t curNodeID){
-		call LSRouting.printDVTable();
+		//call LSRouting.printDVTable();
 		for(i = 0; i < maxNodes; i++){
 			routingTable[curNodeID - 1][i][1] = maxNodes + 1;
 			considered[i] = 0;
@@ -57,7 +57,7 @@ implementation{
 				}
 			}
 		}
-		call LSRouting.printRouteTable();
+		//call LSRouting.printRouteTable();
 	}
 
 	command void LSRouting.LSInit(){
