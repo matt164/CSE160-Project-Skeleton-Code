@@ -75,7 +75,7 @@ implementation{
 	}
 
 	command uint16_t LSRouting.getNextHop(uint16_t curNodeID, uint16_t destNodeID){
-		return routingTable[curNodeID][destNodeID][0];
+		return routingTable[curNodeID - 1][destNodeID - 1][0];
 	}
 	
 	command void LSRouting.printRouteTable(){
