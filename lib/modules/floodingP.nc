@@ -60,6 +60,7 @@ implementation{
 				//the message was a normal ping and should be sent along the global shortest path via the routing table
 				else if(msg->dest != curNodeID){
 					nextHop = call LSRouting.getNextHop(curNodeID, msg->dest);
+					printf("Sending packet from %d to %d via %d",msg->src, msg->dest, nextHop);
 					call Sender.send(*msg, nextHop);
 				}
 			}
