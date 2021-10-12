@@ -21,8 +21,8 @@ implementation{
 
 	//first dimmension is the node who owns that particular routing table
 	//second dimmension is the node to which you wish to route
-	//first element of third dimmension is next hop, second is path cost currently using hop count, third element is the highest seq number LS packet received 
-	uint16_t routingTable[19][19][3] = {0};
+	//first element of third dimmension is next hop, second is path cost currently using hop count, third element is the highest seq number LS packet received 4th is counter to time out stale data
+	uint16_t routingTable[19][19][4] = {0};
 
 	//first dimmension is the owner of that Distance Vector Table
 	//second dimmension is the source node of the Link State Announcement
@@ -36,6 +36,11 @@ implementation{
 		//call LSRouting.printDVTable();
 		for(i = 0; i < maxNodes; i++){
 			routingTable[curNodeID - 1][i][1] = maxNodes + 1;
+			routingTable[curNodeID - 1][i][3] = routingTable[curNodeID - 1][i][3] - 1;
+			//times out stale data after 2 cycles of not being updated.
+			if(routingTable[curNodeID - 1][i][3] < 1)
+				for(j = 0; j < maxNodes; j++)
+					DVTable[curNodeID - 1][i][j] = maxNodes + 1;
 			considered[i] = 0;
 		}
 		routingTable[curNodeID - 1][curNodeID - 1][1] = 0;
@@ -69,6 +74,8 @@ implementation{
 			//printf("Node: %d adding DV from %d\n", curNodeID, msg->src);
 			for(i = 0; i < maxNodes; i++){
 				DVTable[curNodeID - 1][msg->src - 1][i] = *(msg->payload + i);
+				//sets the timer for stale data to 3
+				routingTable[curNodeID - 1][msg->src - 1][3] = 3;
 				//printf("%d ", DVTable[curNodeID - 1][msg->src - 1][i]);
 			}
 			//printf("\n");
