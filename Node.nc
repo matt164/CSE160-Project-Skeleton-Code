@@ -97,10 +97,11 @@ implementation{
 
    event void CommandHandler.printRouteTable(){
       call LSRouting.printRouteTable();
+      call LSRouting.printDVTable();
    }
 
    event void CommandHandler.printLinkState(){
-      call LSRouting.printDVTable();
+      
    }
 
    event void CommandHandler.printDistanceVector(){}
