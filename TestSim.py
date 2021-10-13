@@ -139,6 +139,7 @@ def main():
     #s.addChannel(s.GENERAL_CHANNEL);
     #s.addChannel(s.NEIGHBOR_CHANNEL);
     #s.addChannel(s.FLOODING_CHANNEL);
+    #s.addChannel(s.ROUTING_CHANNEL);
 
     s.runTime(20);
     s.runTime(10);
@@ -146,6 +147,7 @@ def main():
     s.runTime(20);
     s.runTime(20);
     s.ping(1, 9, "Hello, World");
+    s.runTime(20);
     s.routeDMP(1);
     s.runTime(20);
 
