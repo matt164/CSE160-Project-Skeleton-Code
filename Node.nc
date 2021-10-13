@@ -99,7 +99,7 @@ implementation{
       i = 1;
       call LSRouting.printRouteTable();
       call LSRouting.printDVTable();
-      printf("Doing this % times\n",i);
+      printf("Iteration %\n",i);
       i++;
    }
 
