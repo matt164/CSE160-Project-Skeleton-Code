@@ -99,7 +99,9 @@ implementation{
       call LSRouting.printRouteTable();
    }
 
-   event void CommandHandler.printLinkState(){}
+   event void CommandHandler.printLinkState(){
+      call LSRouting.printDVTable();
+   }
 
    event void CommandHandler.printDistanceVector(){}
 
