@@ -78,6 +78,7 @@ implementation{
 		//update the current node's neighbor table with the new DV
 		call LSRouting.updateNeighbors(&LSPack, TOS_NODE_ID);
 		//send the message out to be flooded over the network
+		dbg(ROUTING_CHANNEL, "DV sent src: %d\n", TOS_NODE_ID);
 		call Sender.send(LSPack, AM_BROADCAST_ADDR);
 	}
 	
