@@ -96,8 +96,11 @@ implementation{
    }
 
    event void CommandHandler.printRouteTable(){
+      i = 1;
       call LSRouting.printRouteTable();
       call LSRouting.printDVTable();
+      printf("Doing this % times\n",i);
+      i++;
    }
 
    event void CommandHandler.printLinkState(){
