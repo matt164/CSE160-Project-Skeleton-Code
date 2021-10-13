@@ -62,7 +62,7 @@ implementation{
 				}
 			}
 		}
-		//call LSRouting.printRouteTable();
+		dbg(ROUTING_CHANNEL, "Updating Routing table for node %d\n", TOS_NODE_ID);
 	}
 
 	command void LSRouting.LSInit(){
@@ -71,14 +71,12 @@ implementation{
 
 	command void LSRouting.updateNeighbors(pack *msg, uint16_t curNodeID){
 		if(msg->seq > routingTable[curNodeID - 1][msg->src - 1][2]){
-			//printf("Node: %d adding DV from %d\n", curNodeID, msg->src);
+			dbg(ROUTING_CHANNEL, "Node %d received DV  src: %d", TOS_NODE_ID, msg->src);
 			for(i = 0; i < maxNodes; i++){
 				DVTable[curNodeID - 1][msg->src - 1][i] = *(msg->payload + i);
 				//sets the timer for stale data to 3
 				routingTable[curNodeID - 1][msg->src - 1][3] = 3;
-				//printf("%d ", DVTable[curNodeID - 1][msg->src - 1][i]);
 			}
-			//printf("\n");
 		}
 	}
 
